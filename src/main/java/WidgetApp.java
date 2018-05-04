@@ -7,10 +7,11 @@ public class WidgetApp {
     public int[] prisonForPrincesses(int[] prisons, int[] princesses, int entrance)
     {
         int i = 0, j = 0;
-        Boolean flag=true;
+        Boolean flag = true;\
+        int prisonsThatAccomodate[] = new int[prisons.length];
         HashMap<Integer,Integer> prisonMap = new HashMap<Integer, Integer>();
         HashMap<Integer,Integer> princessMap = new HashMap<Integer, Integer>();
-        int counter = 1, biscuit = 1, result[] = new int[princesses.length];
+        int counter = 1, biscuit = 1;
         for( i=0;i < prisons.length;i++ ){
             prisonMap.put(counter,prisons[i]);
             counter++;
@@ -25,8 +26,26 @@ public class WidgetApp {
         int prisonNumber = 1;
 
           while( biscuit != 0 ) {
-              while( prisonNumber <= prisons.length) {
+              while( prisonNumber <= prisons.length ) {
                   if (princessMap.get(princessNumber) == prisonMap.get(prisonNumber)) {
+
+                      checkIfAnyOtherPlaceExists(prisons[], prisonMap.get( prisonNumber ));
+                      for ( int s =0 ; s < prisons.length ; s++){
+                          if( prisons[i] == prisonCapacity){
+                              prisonsThatAccomodate[s] =
+                          }
+                      }
+
+
+
+
+
+
+
+
+
+
+
                       prisonMap.put(prisonNumber, 0);
                       princessMap.put(princessNumber, prisonNumber);
                       princessNumber++;
@@ -76,6 +95,17 @@ public class WidgetApp {
         }
         return princesses;
 
+    }
+
+    public boolean checkIfAnyOtherPlaceExists(int[] prisons, int prisonCapacity){
+
+        int prisonsThatAccomodate[] = new int[prisons.length];
+        for ( int i =0 ; i < prisons.length ; i++){
+            if( prisons[i] == prisonCapacity){
+               prisonsThatAccomodate[i] =
+            }
+        }
+        return true;
     }
 
 
