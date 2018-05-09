@@ -5,12 +5,12 @@ import java.util.Set;
 public class WidgetApp {
     static int princessNumber = 1;
     static int prisonNumber = 1;
-    int count = prisonNumber + 1;
+    static int prisonCount = prisonNumber + 1;
     HashMap<Integer,Integer> prisonMap = new HashMap<Integer, Integer>();
     HashMap<Integer,Integer> princessMap = new HashMap<Integer, Integer>();
-    Boolean flag = false;
+    Boolean flag = false,checkEntrance = true;
     int entranceFlag = 0;
-    public int[] prisonForPrincesses(int[] prisons, int[] princesses, int entrance )
+    public int[] prisonForPrincesses( int[] prisons, int[] princesses, int entrance )
     {
         int i = 0, j = 0;
 
@@ -30,7 +30,8 @@ public class WidgetApp {
 
           while( biscuit != 0 ) {
               while( prisonNumber <= prisons.length) {
-                  if (princessMap.get( princessNumber ) == prisonMap.get( prisonNumber ) ) {
+
+                  if ( princessMap.get( princessNumber ) == prisonMap.get( prisonNumber ) ) {
                       prisonMap.put(prisonNumber, -2);
                       princessMap.put( princessNumber, prisonNumber );
                       princessNumber++;
@@ -41,14 +42,53 @@ public class WidgetApp {
                           break;
                       }
                   }
-                  else if (  prisonMap.get( prisonNumber ) == entrance && princessMap.get( princessNumber ) == entrance ){     //check for prison i.e close to entrance
-                      prisonMap.put( prisonNumber,-2);
-                      princessMap.put(princessNumber, prisonNumber);
-                      princessNumber++;
-                      prisonNumber = 1;
-                      entranceFlag = 1;
 
-                  } else if( princessMap.get( princessNumber ) < prisonMap.get(prisonNumber) ){
+                  else if ( entrance != 0 ){ // what if there is no entrance
+                      checkEntrance =  prisonMap.containsValue( entrance );
+                  }
+
+                  else if (  prisonNumber == entrance || prisonMap.get( prisonNumber ) == entrance && princessMap.get(princessNumber) == entrance ) {     //check for prison i.e close to entrance && princessMap.get( princessNumber ) == entrance
+
+                      if( prisonMap.get( prisonNumber ) != -2 ) {
+                          prisonMap.put( prisonNumber, -2 );
+                          princessMap.put(princessNumber, prisonNumber);
+                          princessNumber++;
+                          prisonNumber = 1;
+                          entranceFlag = 1;
+                          checkEntrance =  prisonMap.containsValue( entrance );
+                          if (checkEntrance.equals(false)){
+                              entrance = 0;
+                          }
+
+                      }  else{
+                          prisonNumber++;
+                      }
+
+
+                      if ( princessNumber > princesses.length ){
+                          biscuit = 0;
+                          flag = false;
+                          break;
+                      }
+                  }
+
+                  //check if there is any other prison
+                  else if( prisonCount <= prisonMap.size()){
+                      while( prisonCount <= prisonMap.size() ) {
+                          if (princessMap.get(princessNumber) == prisonMap.get(prisonCount)) {
+                              princessMap.put(princessNumber, prisonCount);
+                              prisonMap.put(prisonCount, -2);
+                              princessNumber++;
+                              prisonNumber =1;
+                              prisonCount = prisonNumber + 1;
+
+                              break;
+                          }
+                          prisonCount++;
+                      }
+                  }
+
+                  else if( princessMap.get( princessNumber ) < prisonMap.get(prisonNumber) && checkEntrance.equals( false ) ){
                       prisonMap.put( prisonNumber, -2 );
                       princessMap.put(princessNumber, prisonNumber);
                       princessNumber++;
@@ -61,12 +101,13 @@ public class WidgetApp {
                   }
                   else {
                       prisonNumber++;
-                      if ( prisonNumber > prisonMap.size()){
+                      if ( prisonNumber > prisonMap.size() ){
                           flag = true;
                       }
                   }
               }
-              if( flag.equals(true)) {
+
+              if( flag.equals( true ) ) {
 
                      princessMap.put(princessNumber, -1);
                       princessNumber++;
@@ -97,7 +138,7 @@ public class WidgetApp {
         int prisons [] = {1, 3, 2, 2};
         int princesses [] = {1, 1, 3, 2, 1};
         int entrance = 2;
-        int result[] = new int[ princesses.length ];
+        int result[] = new int[20];
         WidgetApp object = new WidgetApp();
         result = object.prisonForPrincesses(prisons, princesses, entrance);
         System.out.print( "Princess mapping  " );
